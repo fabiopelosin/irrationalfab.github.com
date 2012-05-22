@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[irrationalfab]]></title>
+  <link href="http://irrationalfab.github.com/atom.xml" rel="self"/>
+  <link href="http://irrationalfab.github.com/"/>
+  <updated>2012-05-22T15:47:41+02:00</updated>
+  <id>http://irrationalfab.github.com/</id>
+  <author>
+    <name><![CDATA[Fabio Pelosin]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Introducing Live for RubyMotion]]></title>
+    <link href="http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion/"/>
+    <updated>2012-05-22T14:45:00+02:00</updated>
+    <id>http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion</id>
+    <content type="html"><![CDATA[<iframe src="http://player.vimeo.com/video/42562216?title=0&amp;byline=0&amp;portrait=0" width="640" height="344" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+
+<p>Live is a gem for RubyMotion that aims to implement some of the
+ideas presented in Bret Victor&#8217;s <a href="https://vimeo.com/36579366">inventing on principle</a> keynote.
+It interfaces with the REPL and
+allows to control it from the comfort of your preferred text editor.
+The resulting code can then be copied to the source files
+with minimal adjustments required.</p>
+
+<!-- more -->
+
+
+<h3>Installation</h3>
+
+<pre><code>$ [sudo] gem install motion-live
+</code></pre>
+
+<h3>Usage</h3>
+
+<p>Add the following line near the top of your <code>Rakefile</code>:</p>
+
+<pre><code>require 'motion-live'
+</code></pre>
+
+<p>Run motion-live:</p>
+
+<pre><code>$ rake live
+</code></pre>
+
+<p>At this point you can just edit <code>LiveScratchpad.rb</code>,
+hit save, and see the changes being propagated to the application.</p>
+
+<p>By the default only the lines that weren&#8217;t present in the previous
+scratchpad are sent to the REPL.
+This behaviour is more efficient and well suited for
+changing the state of the application.
+However, it is less convenient for redefining logic.
+In this case is possible to include the <code>#nodiff</code> magic
+comment, which forces to send the whole file.</p>
+
+<h3>An example</h3>
+
+<pre><code>$ git clone https://github.com/HipByte/RubyMotionSamples.git
+$ cd RubyMotionSamples/Timer
+
+$ vim Rakefile
+# Add `require 'motion-live'`
+
+$ vim LiveScratchpad.rb
+$ rake live
+</code></pre>
+
+<p>The timer is a beautiful sample but it is lacking an essential feature:
+the label does not change color! Lets turbo-charge it.</p>
+
+<p>Add the following code to the scratchpad and save.
+The method is taken from <a href="https://github.com/HipByte/RubyMotionSamples/blob/master/Timer/app/timer_controller.rb#L22...L31">app/timer_controller.rb</a>.</p>
+
+<figure class='code'><figcaption><span>LiveScratchpad.rb  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#nodiff</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">TimerController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">actionTapped</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@timer</span>
+</span><span class='line'>      <span class="c1"># The following line is not present in the original implementation</span>
+</span><span class='line'>      <span class="vi">@state</span><span class="o">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">greenColor</span>
+</span><span class='line'>      <span class="vi">@timer</span><span class="o">.</span><span class="n">invalidate</span>
+</span><span class='line'>      <span class="vi">@timer</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="c1"># The following line is not present in the original implementation</span>
+</span><span class='line'>      <span class="vi">@state</span><span class="o">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">redColor</span>
+</span><span class='line'>      <span class="vi">@duration</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="vi">@timer</span> <span class="o">=</span> <span class="no">NSTimer</span><span class="o">.</span><span class="n">scheduledTimerWithTimeInterval</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">target</span><span class="ss">:self</span><span class="p">,</span> <span class="n">selector</span><span class="ss">:&#39;timerFired&#39;</span><span class="p">,</span> <span class="n">userInfo</span><span class="ss">:nil</span><span class="p">,</span> <span class="n">repeats</span><span class="ss">:true</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="vi">@action</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="o">!</span><span class="vi">@action</span><span class="o">.</span><span class="n">selected?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, run and stop the timer (without restarting the simulator)
+and be prepared to blow away your retina.</p>
+
+<h3>Known Caveats</h3>
+
+<ul>
+<li>The code is interacting with REPL through a leaky abstraction. For example, using the nodiff mode in the demo shown in the video would result in new views being created every time the file is saved.</li>
+<li>Methods and classes which are not actually used by the compiled code might be striped and thus will not be available at runtime.</li>
+<li>Long declarations might choke the REPL and crash the simulator.</li>
+<li>This is a 0.1 release.</li>
+</ul>
+
+
+<h3>Source</h3>
+
+<p>The project is available at GitHub on the <a href="https://github.com/irrationalfab/motion-live">irrationalfab/motion-live</a> repo.</p>
+]]></content>
+  </entry>
+  
+</feed>

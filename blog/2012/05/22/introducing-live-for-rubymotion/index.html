@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Introducing Live for RubyMotion - irrationalfab</title>
+  <meta name="author" content="Fabio Pelosin">
+
+  
+  <meta name="description" content="Live is a gem for RubyMotion that aims to implement some of the
+ideas presented in Bret Victor&#8217;s inventing on principle keynote.
+It interfaces &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="irrationalfab" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31944540-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">irrationalfab</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:irrationalfab.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Introducing Live for RubyMotion</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-22T14:45:00+02:00" pubdate data-updated="true">May 22<span>nd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><iframe src="http://player.vimeo.com/video/42562216?title=0&amp;byline=0&amp;portrait=0" width="640" height="344" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+
+<p>Live is a gem for RubyMotion that aims to implement some of the
+ideas presented in Bret Victor&#8217;s <a href="https://vimeo.com/36579366">inventing on principle</a> keynote.
+It interfaces with the REPL and
+allows to control it from the comfort of your preferred text editor.
+The resulting code can then be copied to the source files
+with minimal adjustments required.</p>
+
+<!-- more -->
+
+
+<h3>Installation</h3>
+
+<pre><code>$ [sudo] gem install motion-live
+</code></pre>
+
+<h3>Usage</h3>
+
+<p>Add the following line near the top of your <code>Rakefile</code>:</p>
+
+<pre><code>require 'motion-live'
+</code></pre>
+
+<p>Run motion-live:</p>
+
+<pre><code>$ rake live
+</code></pre>
+
+<p>At this point you can just edit <code>LiveScratchpad.rb</code>,
+hit save, and see the changes being propagated to the application.</p>
+
+<p>By the default only the lines that weren&#8217;t present in the previous
+scratchpad are sent to the REPL.
+This behaviour is more efficient and well suited for
+changing the state of the application.
+However, it is less convenient for redefining logic.
+In this case is possible to include the <code>#nodiff</code> magic
+comment, which forces to send the whole file.</p>
+
+<h3>An example</h3>
+
+<pre><code>$ git clone https://github.com/HipByte/RubyMotionSamples.git
+$ cd RubyMotionSamples/Timer
+
+$ vim Rakefile
+# Add `require 'motion-live'`
+
+$ vim LiveScratchpad.rb
+$ rake live
+</code></pre>
+
+<p>The timer is a beautiful sample but it is lacking an essential feature:
+the label does not change color! Lets turbo-charge it.</p>
+
+<p>Add the following code to the scratchpad and save.
+The method is taken from <a href="https://github.com/HipByte/RubyMotionSamples/blob/master/Timer/app/timer_controller.rb#L22...L31">app/timer_controller.rb</a>.</p>
+
+<figure class='code'><figcaption><span>LiveScratchpad.rb  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#nodiff</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">TimerController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">actionTapped</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@timer</span>
+</span><span class='line'>      <span class="c1"># The following line is not present in the original implementation</span>
+</span><span class='line'>      <span class="vi">@state</span><span class="o">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">greenColor</span>
+</span><span class='line'>      <span class="vi">@timer</span><span class="o">.</span><span class="n">invalidate</span>
+</span><span class='line'>      <span class="vi">@timer</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="c1"># The following line is not present in the original implementation</span>
+</span><span class='line'>      <span class="vi">@state</span><span class="o">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">redColor</span>
+</span><span class='line'>      <span class="vi">@duration</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="vi">@timer</span> <span class="o">=</span> <span class="no">NSTimer</span><span class="o">.</span><span class="n">scheduledTimerWithTimeInterval</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">target</span><span class="ss">:self</span><span class="p">,</span> <span class="n">selector</span><span class="ss">:&#39;timerFired&#39;</span><span class="p">,</span> <span class="n">userInfo</span><span class="ss">:nil</span><span class="p">,</span> <span class="n">repeats</span><span class="ss">:true</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="vi">@action</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="o">!</span><span class="vi">@action</span><span class="o">.</span><span class="n">selected?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, run and stop the timer (without restarting the simulator)
+and be prepared to blow away your retina.</p>
+
+<h3>Known Caveats</h3>
+
+<ul>
+<li>The code is interacting with REPL through a leaky abstraction. For example, using the nodiff mode in the demo shown in the video would result in new views being created every time the file is saved.</li>
+<li>Methods and classes which are not actually used by the compiled code might be striped and thus will not be available at runtime.</li>
+<li>Long declarations might choke the REPL and crash the simulator.</li>
+<li>This is a 0.1 release.</li>
+</ul>
+
+
+<h3>Source</h3>
+
+<p>The project is available at GitHub on the <a href="https://github.com/irrationalfab/motion-live">irrationalfab/motion-live</a> repo.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Fabio Pelosin</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-22T14:45:00+02:00" pubdate data-updated="true">May 22<span>nd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rubymotion/'>RubyMotion</a>, <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion/" data-via="" data-counturl="http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/05/22/introducing-live-for-rubymotion/">Introducing Live for RubyMotion</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/irrationalfab">@irrationalfab</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'irrationalfab',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Fabio Pelosin -
+  <span class="credit">
+    Powered by <a href="http://octopress.org">Octopress</a>,
+    Theme by <a href="http://melandri.net/2012/02/14/octopress-theme-customization/">Alessandro Melandri</a>.
+  </span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'irrationalfab';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion/';
+        var disqus_url = 'http://irrationalfab.github.com/blog/2012/05/22/introducing-live-for-rubymotion/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
