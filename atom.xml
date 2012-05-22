@@ -4,7 +4,7 @@
   <title><![CDATA[irrationalfab]]></title>
   <link href="http://irrationalfab.github.com/atom.xml" rel="self"/>
   <link href="http://irrationalfab.github.com/"/>
-  <updated>2012-05-22T16:03:47+02:00</updated>
+  <updated>2012-05-22T17:26:09+02:00</updated>
   <id>http://irrationalfab.github.com/</id>
   <author>
     <name><![CDATA[Fabio Pelosin]]></name>
@@ -133,6 +133,10 @@ and be prepared to blow away your retina.</p>
 <h3>Source</h3>
 
 <p>The project is available at GitHub on the <a href="https://github.com/irrationalfab/motion-live">irrationalfab/motion-live</a> repo.</p>
+
+<h3>Discussion</h3>
+
+<p>Discussion at <a href="http://news.ycombinator.com/item?id=4007932">HackerNews</a>.</p>
 ]]></content>
   </entry>
   
